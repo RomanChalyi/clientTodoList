@@ -1,0 +1,46 @@
+@import "styles/variable.scss";
+
+.title {
+  font-size: 100px;
+  text-align: center;
+  color: $colorTitle;
+  padding-top: 80px;
+}
+
+.todo {
+  display: flex;
+  justify-content: center;
+}
+
+.todoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 60%;
+  background-color: $colorWhile;
+  width: 100%;
+  box-shadow: 1px 0px 15px $colorBlack;
+  margin-bottom: 20px;
+}
+
+.list {
+  height: 300px;
+  overflow: auto;
+}
+
+.footer {
+  color: #bfbfbf;
+  font-size: 14px;
+  text-shadow: 0 1px 0 #ffffff80;
+  text-align: center;
+}
+
+@media screen and (max-width: $tablet) {
+  .title {
+    font-size: 70px;
+    padding-top: 50px;
+  }
+  .todoContainer {
+    max-width: 90%;
+  }
+}

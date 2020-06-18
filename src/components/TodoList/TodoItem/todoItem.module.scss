@@ -1,0 +1,98 @@
+@import "styles/variable.scss";
+
+.item {
+  position: relative;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $colorBlack;
+  min-height: 58px;
+  z-index: 1;
+
+  &Label {
+    font-size: 24px;
+    color: $colorGray;
+    word-break: break-ALL;
+    padding: 10px;
+    width: 100%;
+  }
+
+  &Edit {
+    width: 100%;
+    height: 58px;
+    box-shadow: #00000033 0px -1px 5px 0px inset;
+    z-index: 22;
+    outline: none;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #999999;
+    border-image: initial;
+    padding: 0px 12px;
+    font-size: 24px;
+    color: $colorGray;
+    word-break: break-ALL;
+  }
+
+  &LabelDone {
+    color: #d9d9d9;
+    text-decoration: line-through;
+  }
+
+  + label {
+    width: 50px;
+    height: 36px;
+  }
+
+  &Checkbox {
+    display: none;
+    + label:before {
+      content: "";
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      margin: 0px 10px;
+      border: 1px solid $colorBlack;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 32px;
+    }
+
+    &:checked + label:before {
+      font-size: 32px;
+      content: "✓";
+      border: 1px solid #33d633;
+      color: #33d633;
+    }
+  }
+
+  &:hover .deleteBtn {
+    display: block;
+    border: none;
+  }
+
+  &:hover {
+    color: #9e7070;
+  }
+}
+
+.deleteBtn {
+  display: none;
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  font-weight: 900;
+  color: #cc9a9a;
+  margin: 0 20px;
+  font-size: 30px;
+  transition: color 0.2s ease-out;
+  right: -15px;
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
+
+@media screen and (max-width: $tablet) {
+  .itemLabel {
+    font-size: 20px;
+  }
+}

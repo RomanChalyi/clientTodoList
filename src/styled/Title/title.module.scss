@@ -1,0 +1,12 @@
+@import "styles/variable.scss";
+
+.blockTitle {
+  height: 80px;
+  background-color: $bgColorMain;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 20px;
+  font-style: italic;
+}

@@ -1,0 +1,54 @@
+@import "styles/variable.scss";
+
+.field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 60px;
+  width: 100%;
+  border-bottom: 1px solid $colorBlack;
+}
+
+.toggleAll {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+
+  + label {
+    position: absolute;
+    top: 13px;
+    left: 0;
+    transform: rotate(90deg);
+
+    &:before {
+      content: "❯";
+      font-size: 28px;
+      color: #e6e6e6;
+      margin: 0px 20px;
+    }
+  }
+  &:checked {
+    + label:before {
+      color: #737373;
+    }
+  }
+}
+
+.inputAdd {
+  height: 60px;
+  border: none;
+  font-size: 24px;
+  width: 100%;
+  outline: none;
+  color: $colorGray;
+  margin-left: 60px;
+  font-style: italic;
+}
+
+@media screen and (max-width: $tablet) {
+  .inputAdd {
+    height: 40px;
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,82 @@
+@import "styles/variable.scss";
+
+.filterBlock {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: rgb(119, 119, 119);
+  position: relative;
+}
+
+.margin {
+  margin: 10px;
+}
+
+.btnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn {
+  outline: none;
+  font-size: inherit;
+  color: $colorLightGray;
+  cursor: pointer;
+  padding: 3px 7px;
+  border: 1px solid transparent;
+  background-color: transparent;
+}
+
+.selected {
+  border: 1px solid #af2f2f33;
+  border-radius: 3px;
+}
+
+.shadow {
+  height: 42px;
+  margin-top: -44px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6,
+    0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6,
+    0 17px 2px -6px rgba(0, 0, 0, 0.2);
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.pagination {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  list-style-type: none;
+  color: $colorLightGray;
+  justify-content: center;
+  z-index: 222;
+  height: 40px;
+}
+
+.disable {
+  color: #c0bbbb;
+}
+
+.link {
+  padding: 5px 7px;
+  outline: none;
+  cursor: pointer;
+}
+
+@media screen and (max-width: $tablet) {
+  .filterBlock {
+    font-size: 12px;
+  }
+
+  .link {
+    padding: 3px 5px;
+  }
+  .margin {
+    margin: 2px;
+  }
+}
