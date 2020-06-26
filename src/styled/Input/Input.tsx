@@ -9,6 +9,7 @@ interface InputProps {
   onBlur?(): void;
   ref?: any;
   disabled?: boolean;
+  tabIndex?: any;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -19,6 +20,7 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   onBlur,
   disabled,
+  tabIndex,
 }) => {
   const inputRef = useRef<any>(null);
 
@@ -28,6 +30,7 @@ const Input: React.FC<InputProps> = ({
 
   return (
     <input
+      tabIndex={tabIndex || null}
       ref={inputRef}
       className={className}
       onChange={onChange}

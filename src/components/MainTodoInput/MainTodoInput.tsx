@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox, Input } from "styled";
 import { addTask, changeTasksStatuses } from "action";
@@ -6,7 +6,6 @@ import { RootState, ITask, QueryParams } from "types";
 import { getChecked } from "selectors";
 import { DONE, ACTIVE, ALL } from "constant";
 import { field, toggleAll, inputAdd } from "./mainTodoInput.module.scss";
-import { socket } from "Root";
 
 interface MainTodoInputProps extends QueryParams {
   tasks: ITask[];
@@ -45,12 +44,6 @@ const MainTodoInput: React.FC<MainTodoInputProps> = ({
       })
     );
   };
-  useEffect(() => {
-    socket.on("test", (data: any) => {
-      console.log("++++++++++++++++++++++++++++++++++_________++++++++++++");
-      console.log(data);
-    });
-  }, []);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>): void => {
@@ -79,16 +72,6 @@ const MainTodoInput: React.FC<MainTodoInputProps> = ({
         value={taskValue}
         placeholder="What needs to be done?"
       />
-      <button
-        onClick={() => {
-          socket.emit("click", socket.id, limit);
-          // socket.on("click", (data: any) => {
-          //   console.log(data, "response");
-          // });
-        }}
-      >
-        clickMe
-      </button>
     </div>
   );
 };

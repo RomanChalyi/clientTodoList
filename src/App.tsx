@@ -8,7 +8,11 @@ import "styles/global.scss";
 import { SOCKET_PATH } from "constant";
 
 export const socket = socketIOClient(SOCKET_PATH);
-
+socket.on("some event", () => {
+  console.log(
+    "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=="
+  );
+});
 const App: React.FC = () => {
   return (
     <>

@@ -49,18 +49,18 @@ const TodoTask: React.FC<RouteComponentProps> = ({ location }) => {
   }, []);
 
   useEffect(() => {
-    socket.on("load tasks", () => {
+    const onUpdateTasks = () =>
       dispatch(
         updateTasks({
-          offset: 2,
-          limit: "5",
+          offset: storeOffset,
+          limit: storeLimit,
           filter,
         })
       );
-    });
+    socket.on("load tasks", onUpdateTasks);
 
     return () => {
-      socket.off("load tasks");
+      socket.off("load tasks", onUpdateTasks);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeOffset, storeLimit, filter]);

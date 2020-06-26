@@ -60,7 +60,9 @@ export function* watchLoadTasks() {
 
 function* onUpdateTasks(action: onLoadingTasksParams) {
   try {
+    yield put(showMessage({ text: "Tasks updated ", isError: false }));
     const { limit, offset, filter } = action;
+
     const status = `&status=${filter}`;
     const queryParams: string = `?page=${offset}&limit=${limit}`;
     const allPath = TASKS_PATH + queryParams + status;
@@ -70,10 +72,7 @@ function* onUpdateTasks(action: onLoadingTasksParams) {
       yield all([put(loadingTasksSuccess({ ...payload, offset, limit }))]);
     }
   } catch (err) {
-    yield all([
-      put(loadingEnd()),
-      put(showMessage({ text: err.message, isError: true })),
-    ]);
+    yield all([put(loadingEnd()), put(showMessage({ text: err.message }))]);
   }
 }
 
@@ -121,7 +120,7 @@ function* onDeleteTask(action: onDeleteTaskParams) {
       method: "delete",
       body: action.task,
     });
-    // socket.emit("update tasks", localStorage.getItem("accessToken"));
+    socket.emit("update tasks", localStorage.getItem("accessToken"));
 
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
@@ -148,7 +147,7 @@ function* onChangeTask(action: onChangeTaskParams) {
       method: "put",
       body: action.task,
     });
-    // socket.emit("update tasks", localStorage.getItem("accessToken"));
+    socket.emit("update tasks", localStorage.getItem("accessToken"));
 
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
@@ -179,7 +178,7 @@ function* onChangeVisibleTaskStatuses(
       method: "put",
       body: { status, ids },
     });
-    // socket.emit("update tasks", localStorage.getItem("accessToken"));
+    socket.emit("update tasks", localStorage.getItem("accessToken"));
 
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
@@ -208,7 +207,7 @@ function* onDeleteCompletedTasks(action: onDeleteCompletedTasksParams) {
       body: action.ids,
     });
 
-    // socket.emit("update tasks", localStorage.getItem("accessToken"));
+    socket.emit("update tasks", localStorage.getItem("accessToken"));
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
     yield all([

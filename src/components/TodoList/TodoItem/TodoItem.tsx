@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import cx from "classnames";
 import { Button, Checkbox, Input } from "styled";
 import { ITask } from "types";
@@ -49,15 +49,20 @@ const TodoItem: React.FC<TodoItemProps> = ({
     const validate = taskValue.trim();
 
     setEdit(false);
-    if (validate) {
+    if (validate && taskValue !== task.value) {
       task.value = taskValue;
       return saveEditTaskValue(task);
+    } else if (!validate) {
+      setTaskValue(task.value);
+      showMessage("Task name cannot be empty", true);
     }
-    setTaskValue(task.value);
-    showMessage("Task name cannot be empty", true);
   };
 
   const onClick = (): void => handleDeleteTask(task);
+
+  useEffect(() => {
+    setTaskValue(task.value);
+  }, [task]);
 
   return (
     <li className={item}>

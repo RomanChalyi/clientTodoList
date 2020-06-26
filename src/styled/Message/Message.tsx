@@ -49,14 +49,14 @@ const Message: React.FC<MessageProps> = ({
   const onMouseLeave = () => {
     const timerId = setTimeout(() => {
       hideMessage(id);
-    }, 5000);
+    }, 3000);
     setTimeoutId(timerId);
   };
 
   useEffect(() => {
     const timerId = setTimeout(() => {
       hideMessage(id);
-    }, 5000);
+    }, 3000);
 
     setTimeoutId(timerId);
     return () => clearTimeout(timeoutId);
