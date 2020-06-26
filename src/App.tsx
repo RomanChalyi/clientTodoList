@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import socketIOClient from "socket.io-client";
 import Title from "styled/Title";
 import Router from "Router";

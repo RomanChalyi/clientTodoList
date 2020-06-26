@@ -50,26 +50,20 @@ const TodoTask: React.FC<RouteComponentProps> = ({ location }) => {
 
   useEffect(() => {
     socket.on("load tasks", () => {
-      console.log("+++++++++++++++++++++++");
-      const { page, limit } = qs.parse(location.search, {
-        ignoreQueryPrefix: true,
-      });
-
-      const paramsOffset: any =
-        page !== undefined && !isNaN(+page) ? page : storeOffset;
-      const paramsLimit: any =
-        limit !== undefined && !isNaN(+limit) ? limit : storeLimit;
-
       dispatch(
         updateTasks({
-          offset: paramsOffset,
-          limit: paramsLimit,
+          offset: 2,
+          limit: "5",
           filter,
         })
       );
     });
+
+    return () => {
+      socket.off("load tasks");
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
+  }, [storeOffset, storeLimit, filter]);
 
   return (
     <PageContainer>
