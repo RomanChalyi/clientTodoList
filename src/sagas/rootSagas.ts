@@ -7,6 +7,7 @@ import {
   watchChangeTask,
   watchChangeVisibleTaskStatuses,
   watchDeleteCompletedTasks,
+  watchUpdateTasks,
 } from "./todoTasks";
 import {
   watchSignUp,
@@ -27,5 +28,6 @@ export default function* rootSaga() {
     watchSignIn(),
     watchLoadUserData(),
     watchLogout(),
+    watchUpdateTasks(),
   ]);
 }

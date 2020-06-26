@@ -8,6 +8,7 @@ export const onLoadingTasksSuccess = (
   if (filter) {
     localStorage.setItem("filter", filter);
   }
+
   return {
     ...state,
     tasks,

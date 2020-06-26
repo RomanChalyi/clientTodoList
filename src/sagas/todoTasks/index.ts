@@ -3,6 +3,7 @@ import { push } from "connected-react-router";
 import { QueryParams, ITask } from "types";
 import {
   LOAD_TASKS,
+  UPDATE_TASKS,
   ADD_TASK,
   DELETE_TASK,
   TASKS_PATH,
@@ -57,6 +58,29 @@ export function* watchLoadTasks() {
   yield takeEvery([LOAD_TASKS, CHANGE_FILTER], onLoadingTasks);
 }
 
+function* onUpdateTasks(action: onLoadingTasksParams) {
+  try {
+    const { limit, offset, filter } = action;
+    const status = `&status=${filter}`;
+    const queryParams: string = `?page=${offset}&limit=${limit}`;
+    const allPath = TASKS_PATH + queryParams + status;
+    const payload = yield watchResponse(allPath);
+
+    if (payload) {
+      yield all([put(loadingTasksSuccess({ ...payload, offset, limit }))]);
+    }
+  } catch (err) {
+    yield all([
+      put(loadingEnd()),
+      put(showMessage({ text: err.message, isError: true })),
+    ]);
+  }
+}
+
+export function* watchUpdateTasks() {
+  yield takeEvery(UPDATE_TASKS, onUpdateTasks);
+}
+
 interface OnAddTaskParams extends QueryParams {
   type: string;
   task: { value: string; status?: string };
@@ -97,7 +121,7 @@ function* onDeleteTask(action: onDeleteTaskParams) {
       method: "delete",
       body: action.task,
     });
-    socket.emit("update tasks", localStorage.getItem("accessToken"));
+    // socket.emit("update tasks", localStorage.getItem("accessToken"));
 
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
@@ -124,7 +148,7 @@ function* onChangeTask(action: onChangeTaskParams) {
       method: "put",
       body: action.task,
     });
-    socket.emit("update tasks", localStorage.getItem("accessToken"));
+    // socket.emit("update tasks", localStorage.getItem("accessToken"));
 
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
@@ -155,7 +179,7 @@ function* onChangeVisibleTaskStatuses(
       method: "put",
       body: { status, ids },
     });
-    socket.emit("update tasks", localStorage.getItem("accessToken"));
+    // socket.emit("update tasks", localStorage.getItem("accessToken"));
 
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
@@ -184,6 +208,7 @@ function* onDeleteCompletedTasks(action: onDeleteCompletedTasksParams) {
       body: action.ids,
     });
 
+    // socket.emit("update tasks", localStorage.getItem("accessToken"));
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
     yield all([

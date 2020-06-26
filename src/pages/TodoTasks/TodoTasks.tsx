@@ -6,7 +6,7 @@ import { MainTodoInput, TodoList, TaskFilter } from "components";
 import { Paragraph, PageContainer } from "styled";
 import { getTasks, getOffset, getLimit, getFilter } from "selectors";
 import { RootState } from "types";
-import { loadTasks } from "action";
+import { loadTasks, updateTasks } from "action";
 import {
   title,
   todo,
@@ -14,7 +14,6 @@ import {
   footer,
   list,
 } from "./todoTasks.module.scss";
-
 import { socket } from "App";
 
 const footerList: string[] = [
@@ -46,10 +45,23 @@ const TodoTask: React.FC<RouteComponentProps> = ({ location }) => {
         filter,
       })
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  useEffect(() => {
     socket.on("load tasks", () => {
+      console.log("+++++++++++++++++++++++");
+      const { page, limit } = qs.parse(location.search, {
+        ignoreQueryPrefix: true,
+      });
+
+      const paramsOffset: any =
+        page !== undefined && !isNaN(+page) ? page : storeOffset;
+      const paramsLimit: any =
+        limit !== undefined && !isNaN(+limit) ? limit : storeLimit;
+
       dispatch(
-        loadTasks({
+        updateTasks({
           offset: paramsOffset,
           limit: paramsLimit,
           filter,
@@ -57,7 +69,7 @@ const TodoTask: React.FC<RouteComponentProps> = ({ location }) => {
       );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   return (
     <PageContainer>

@@ -8,6 +8,7 @@ import {
   EDIT_TASK_VALUE,
   LOAD_TASKS,
   LOADING_TASKS_SUCCESS,
+  UPDATE_TASKS,
 } from "constant";
 import { ITask, QueryParams } from "types";
 
@@ -24,6 +25,19 @@ export const loadTasks = ({
 }: LoadTasksParams) => {
   return { type: LOAD_TASKS, offset, limit, redirect, filter };
 };
+
+export const updateTasks = ({
+  offset,
+  limit,
+  redirect,
+  filter,
+}: LoadTasksParams) => ({
+  type: UPDATE_TASKS,
+  offset,
+  limit,
+  redirect,
+  filter,
+});
 
 interface LoadingTasksSuccessParams extends QueryParams {
   tasks: ITask[];
