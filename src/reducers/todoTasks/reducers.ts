@@ -5,14 +5,15 @@ export const onLoadingTasksSuccess = (
   action: loadingTasksSuccessActionType
 ) => {
   const { tasks, totalElements, offset, limit, filter } = action.payload;
-  window.localStorage.setItem("filter", filter);
-
+  if (filter) {
+    localStorage.setItem("filter", filter);
+  }
   return {
     ...state,
     tasks,
     totalElements,
     offset,
     limit,
-    filter,
+    filter: localStorage.getItem("filter"),
   };
 };

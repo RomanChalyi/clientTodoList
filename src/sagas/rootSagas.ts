@@ -8,7 +8,12 @@ import {
   watchChangeVisibleTaskStatuses,
   watchDeleteCompletedTasks,
 } from "./todoTasks";
-import { watchSignUp, watchSignIn } from "./authorization";
+import {
+  watchSignUp,
+  watchSignIn,
+  watchLoadUserData,
+  watchLogout,
+} from "./authorization";
 
 export default function* rootSaga() {
   yield all([
@@ -20,5 +25,7 @@ export default function* rootSaga() {
     watchDeleteCompletedTasks(),
     watchSignUp(),
     watchSignIn(),
+    watchLoadUserData(),
+    watchLogout(),
   ]);
 }

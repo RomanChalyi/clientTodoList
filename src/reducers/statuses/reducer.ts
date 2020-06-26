@@ -1,8 +1,4 @@
-import {
-  StateStatuses,
-  showMessageActionType,
-  signInSuccessActionType,
-} from "types";
+import { StateStatuses, showMessageActionType } from "types";
 
 export const onLoadingStart = (state: StateStatuses) => {
   return { ...state, pendingRequest: state.pendingRequest + 1 };
@@ -18,27 +14,31 @@ export const onShowMessage = (
   state: StateStatuses,
   action: showMessageActionType
 ) => {
-  const { isError, message } = action;
+  return { ...state, messages: [...state.messages, action.message] };
+};
+
+export const onHideMessage = (state: StateStatuses, action: any) => {
+  const messages = state.messages.filter((message) => message.id !== action.id);
   return {
     ...state,
-    showMessage: true,
-    isError: isError,
-    messageInfo: message.toString(),
+    messages,
   };
 };
 
-export const onHideMessage = (state: StateStatuses) => ({
-  ...state,
-  showMessage: false,
-  isError: false,
-  messageInfo: "",
-});
-
 export const onSignInSuccess = (state: StateStatuses, action: any) => {
-  const { accessToken, login, refreshToken, exp, id } = action;
+  const { accessToken, refreshToken, user } = action;
 
   window.localStorage.setItem("accessToken", accessToken);
   window.localStorage.setItem("refreshToken", refreshToken);
-  window.localStorage.setItem("exp", exp);
+
+  return { ...state, user };
+};
+
+export const onLoadUserDataSuccess = (state: StateStatuses, action: any) => {
+  const { login, id } = action.payload;
   return { ...state, user: { login, id } };
+};
+
+export const onLogoutSuccess = (state: StateStatuses) => {
+  return { ...state, user: {} };
 };

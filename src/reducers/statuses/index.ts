@@ -4,6 +4,8 @@ import {
   SHOW_MESSAGE,
   HIDE_MESSAGE,
   SIGN_IN_SUCCESS,
+  LOAD_USER_DATA_SUCCESS,
+  LOGOUT_SUCCESS,
 } from "constant";
 import {
   onLoadingStart,
@@ -11,18 +13,21 @@ import {
   onShowMessage,
   onHideMessage,
   onSignInSuccess,
+  onLoadUserDataSuccess,
+  onLogoutSuccess,
 } from "./reducer";
 import { StateStatuses, ActionTypesStatuses } from "types";
 
-const initialState: StateStatuses = {
+export const initialState = {
   pendingRequest: 0,
-  showMessage: false,
-  isError: false,
-  messageInfo: "",
-  user: { login: "", id: "" },
+  messages: [],
+  user: {},
 };
 
-export const statuses = (state = initialState, action: ActionTypesStatuses) => {
+export const statuses = (
+  state: StateStatuses = initialState,
+  action: ActionTypesStatuses
+) => {
   switch (action.type) {
     case LOADING_START:
       return onLoadingStart(state);
@@ -34,10 +39,17 @@ export const statuses = (state = initialState, action: ActionTypesStatuses) => {
       return onShowMessage(state, action);
 
     case HIDE_MESSAGE:
-      return onHideMessage(state);
+      return onHideMessage(state, action);
 
     case SIGN_IN_SUCCESS:
       return onSignInSuccess(state, action);
+
+    case LOAD_USER_DATA_SUCCESS:
+      return onLoadUserDataSuccess(state, action);
+
+    case LOGOUT_SUCCESS:
+      return onLogoutSuccess(state);
+
     default: {
       return state;
     }

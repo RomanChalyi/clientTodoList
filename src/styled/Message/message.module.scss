@@ -1,16 +1,8 @@
 @import "styles/variable.scss";
 
-.messageWrapp {
-  position: fixed;
-  bottom: 5px;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, 0);
-  z-index: 22222222;
-}
-
-.message {
-  width: 50vw;
+.messageModal {
+  margin: 5px 0;
+  max-width: 30vw;
   padding: 10px 0;
   border-radius: 5px;
   background-color: #4caf50;
@@ -53,7 +45,7 @@
 }
 
 @media screen and (max-width: $tablet) {
-  .message {
+  .messageModal {
     width: 90vw;
   }
   .deleteBtn {

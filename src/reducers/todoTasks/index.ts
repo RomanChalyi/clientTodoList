@@ -4,7 +4,7 @@ import { ALL, LOADING_TASKS_SUCCESS } from "constant";
 import { onLoadingTasksSuccess } from "./reducers";
 
 const initialState = {
-  filter: window.localStorage.getItem("filter") || ALL,
+  filter: localStorage.getItem("filter") || ALL,
   tasks: [],
   totalElements: 0,
   offset: "1",

@@ -1,7 +1,6 @@
-import { put, takeEvery, call, all } from "redux-saga/effects";
+import { put, takeEvery, all } from "redux-saga/effects";
 import { push } from "connected-react-router";
 import { QueryParams, ITask } from "types";
-import { callApi } from "utils";
 import {
   LOAD_TASKS,
   ADD_TASK,
@@ -12,45 +11,45 @@ import {
   EDIT_TASK_VALUE,
   CHANGE_TASKS_STATUSES,
   DELETE_COMPLETED_TASKS,
-  ALL,
   CHANGE_FILTER,
 } from "constant";
-
 import {
   loadingStart,
   showMessage,
   loadingEnd,
   loadingTasksSuccess,
 } from "action";
+import { watchResponse } from "sagas/authorization";
+import { socket } from "App";
 
 type onLoadingTasksParams = {
   type: string;
   offset: string | number;
   limit: string;
-  redirect?: boolean | undefined;
-  filter?: string | undefined;
+  redirect?: boolean;
+  filter?: string;
 };
 
 function* onLoadingTasks(action: onLoadingTasksParams) {
   try {
     yield put(loadingStart());
     const { limit, offset, filter, redirect } = action;
-    const status = `&status=${
-      filter === ALL || filter === undefined ? "" : filter
-    }`;
-
+    const status = `&status=${filter}`;
     const queryParams: string = `?page=${offset}&limit=${limit}`;
-
     const allPath = TASKS_PATH + queryParams + status;
+    const payload = yield watchResponse(allPath);
 
-    const payload = yield call(callApi, allPath);
-
-    yield all([put(loadingEnd()), put(loadingTasksSuccess(payload))]);
+    if (payload) {
+      yield all([put(loadingEnd()), put(loadingTasksSuccess(payload))]);
+    }
     if (redirect) {
       yield put(push(queryParams));
     }
   } catch (err) {
-    yield all([put(loadingEnd()), put(showMessage(err, true))]);
+    yield all([
+      put(loadingEnd()),
+      put(showMessage({ text: err.message, isError: true })),
+    ]);
   }
 }
 
@@ -67,14 +66,18 @@ function* onAddTask(action: OnAddTaskParams) {
   try {
     yield put(loadingStart());
 
-    yield call(callApi, TASK_PATH, {
+    yield watchResponse(TASK_PATH, {
       method: "post",
       body: action.task,
     });
+    socket.emit("update tasks", localStorage.getItem("accessToken"));
 
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
-    yield all([put(loadingEnd()), put(showMessage(err, true))]);
+    yield all([
+      put(loadingEnd()),
+      put(showMessage({ text: err.message, isError: false })),
+    ]);
   }
 }
 
@@ -90,14 +93,18 @@ interface onDeleteTaskParams extends QueryParams {
 function* onDeleteTask(action: onDeleteTaskParams) {
   try {
     yield put(loadingStart());
-    yield call(callApi, TASK_PATH, {
+    yield watchResponse(TASK_PATH, {
       method: "delete",
       body: action.task,
     });
+    socket.emit("update tasks", localStorage.getItem("accessToken"));
 
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
-    yield all([put(loadingEnd()), put(showMessage(err, true))]);
+    yield all([
+      put(loadingEnd()),
+      put(showMessage({ text: err.message, isError: false })),
+    ]);
   }
 }
 
@@ -113,14 +120,18 @@ interface onChangeTaskParams extends QueryParams {
 function* onChangeTask(action: onChangeTaskParams) {
   try {
     yield put(loadingStart());
-    yield call(callApi, TASK_PATH, {
+    yield watchResponse(TASK_PATH, {
       method: "put",
       body: action.task,
     });
+    socket.emit("update tasks", localStorage.getItem("accessToken"));
 
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
-    yield all([put(loadingEnd()), put(showMessage(err, true))]);
+    yield all([
+      put(loadingEnd()),
+      put(showMessage({ text: err.message, isError: false })),
+    ]);
   }
 }
 
@@ -140,14 +151,18 @@ function* onChangeVisibleTaskStatuses(
   try {
     yield put(loadingStart());
     const { ids, status } = action;
-    yield call(callApi, TASKS_PATH, {
+    yield watchResponse(TASKS_PATH, {
       method: "put",
       body: { status, ids },
     });
+    socket.emit("update tasks", localStorage.getItem("accessToken"));
 
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
-    yield all([put(loadingEnd()), put(showMessage(err, true))]);
+    yield all([
+      put(loadingEnd()),
+      put(showMessage({ text: err.message, isError: false })),
+    ]);
   }
 }
 
@@ -164,14 +179,17 @@ function* onDeleteCompletedTasks(action: onDeleteCompletedTasksParams) {
   try {
     yield put(loadingStart());
 
-    yield call(callApi, TASKS_PATH, {
+    yield watchResponse(TASKS_PATH, {
       method: "delete",
       body: action.ids,
     });
 
     yield all([put(loadingEnd()), onLoadingTasks(action)]);
   } catch (err) {
-    yield all([put(loadingEnd()), put(showMessage(err, true))]);
+    yield all([
+      put(loadingEnd()),
+      put(showMessage({ text: err.message, isError: false })),
+    ]);
   }
 }
 

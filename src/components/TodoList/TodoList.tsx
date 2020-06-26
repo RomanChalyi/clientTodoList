@@ -27,7 +27,7 @@ const TodoList: React.FC<TodoListProps> = ({
   const tasks = useSelector((state: RootState) => getVisiblyTasks(state));
 
   const saveEditTaskValue = (task: ITask) => {
-    return dispatch(editTaskValue({ offset, limit, task }));
+    return dispatch(editTaskValue({ offset, limit, task, filter }));
   };
 
   const handleChangeStatusTask = (task: ITask) => () => {
@@ -46,8 +46,8 @@ const TodoList: React.FC<TodoListProps> = ({
     dispatch(deleteTask({ task, offset: pageOffset, limit, filter, redirect }));
   };
 
-  const handleShowMessage = (message: string, isError: boolean) => {
-    dispatch(showMessage(message, isError));
+  const handleShowMessage = (text: string, isError: boolean) => {
+    dispatch(showMessage({ text, isError }));
   };
 
   const text =

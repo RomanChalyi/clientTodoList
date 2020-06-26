@@ -1,10 +1,5 @@
 @import "styles/variable.scss";
 
-.authorizationWrapp {
-  display: flex;
-  justify-content: center;
-}
-
 .form {
   margin: 60px 0;
   display: flex;
@@ -14,7 +9,7 @@
   border-radius: 5px;
   color: $colorLightGray;
 }
-.title {
+.formTitle {
   text-align: center;
   margin: 40px 0;
 }
@@ -59,7 +54,7 @@
   .form {
     width: 80vw;
   }
-  .title {
+  .formTitle {
     margin: 20px 0;
   }
   .inputGroup {
@@ -77,7 +72,7 @@
   .form {
     width: 90vw;
   }
-  .title {
+  .formTitle {
     font-size: 18px;
   }
   .inputGroup {

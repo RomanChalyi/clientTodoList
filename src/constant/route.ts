@@ -3,3 +3,7 @@ export const TASK_PATH: string = `${BASE_URL}/task`;
 export const TASKS_PATH: string = `${BASE_URL}/tasks`;
 export const LOGIN_PATH: string = `${BASE_URL}/login/user`;
 export const AUTHENTICATION_PATH: string = `${BASE_URL}/login`;
+export const TOKEN_PATH: string = `${BASE_URL}/token`;
+export const LOAD_USER_PATH: string = `${BASE_URL}/user`;
+export const LOGOUT_PATH: string = `${BASE_URL}/logout`;
+export const SOCKET_PATH: string = `${BASE_URL}`;

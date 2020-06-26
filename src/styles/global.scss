@@ -13,16 +13,16 @@
 .content {
   min-height: 100vh;
   background-color: $bgColorPage;
+  display: flex;
+  justify-content: center;
 }
 
 .g-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   max-width: 1020px;
   width: 100%;
-}
-
-.flex {
-  display: flex;
-  justify-content: center;
 }
 
 .dn {

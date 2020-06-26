@@ -162,15 +162,18 @@ export const deleteCompletedTasks = ({
 
 interface EditTaskValueParams extends QueryParams {
   task: ITask;
+  filter: string;
 }
 
 export const editTaskValue = ({
   task,
   limit,
   offset,
+  filter,
 }: EditTaskValueParams) => ({
   type: EDIT_TASK_VALUE,
   task,
   limit,
   offset,
+  filter,
 });

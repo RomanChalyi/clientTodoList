@@ -1,19 +1,19 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { PageContainer } from "styled";
 import { useDispatch } from "react-redux";
-import { signIn } from "action";
+import { signUp } from "action";
+import { PageContainer } from "styled";
 import {
   form,
   input,
-  title,
+  formTitle,
   inputGroup,
   submitButton,
   errorMessage,
-} from "./authorization.module.scss";
+} from "./registration.module.scss";
 
-const Authorization: React.FC = () => {
+const Registration: React.FC = () => {
   const dispatch = useDispatch();
 
   const validationSchema = Yup.object().shape({
@@ -22,9 +22,16 @@ const Authorization: React.FC = () => {
       .min(5, "Password must be at least 5 characters")
       .max(40, "Password must be 40 characters or less.")
       .required("Required field"),
+    passwordConfirm: Yup.string()
+      .oneOf([Yup.ref("password")], "Passwords do not match")
+      .required("Password confirm is required"),
   });
 
-  const initialValues = { login: "", password: "" };
+  const initialValues: {
+    login: string;
+    password: string;
+    passwordConfirm: string;
+  } = { login: "", password: "", passwordConfirm: "" };
 
   return (
     <PageContainer>
@@ -32,15 +39,16 @@ const Authorization: React.FC = () => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
-          dispatch(signIn(values));
-          resetForm({});
+          const { login, password } = values;
+          dispatch(signUp({ login, password }));
+          resetForm();
         }}
         validateOnBlur={false}
         validateOnChange={false}
       >
         {() => (
           <Form className={form}>
-            <h1 className={title}>Sign In Form</h1>
+            <h1 className={formTitle}>Sign Up Form</h1>
             <div className={inputGroup}>
               <Field
                 className={input}
@@ -68,11 +76,24 @@ const Authorization: React.FC = () => {
               />
             </div>
 
+            <div className={inputGroup}>
+              <Field
+                className={input}
+                type="password"
+                name="passwordConfirm"
+                placeholder="Repeat password"
+              />
+              <ErrorMessage
+                className={errorMessage}
+                name="passwordConfirm"
+                component="p"
+              />
+            </div>
             <Field
               className={submitButton}
               type="submit"
-              name="Sign In"
-              value="Sign In"
+              name="Sign Up"
+              value="Sign Up"
             />
           </Form>
         )}
@@ -81,4 +102,4 @@ const Authorization: React.FC = () => {
   );
 };
 
-export default Authorization;
+export default Registration;

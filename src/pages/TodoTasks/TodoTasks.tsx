@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import qs from "qs";
 import { MainTodoInput, TodoList, TaskFilter } from "components";
-import { Paragraph, Message } from "styled";
-import { getTasks, getOffset, getLimit, getFilter, getUser } from "selectors";
+import { Paragraph, PageContainer } from "styled";
+import { getTasks, getOffset, getLimit, getFilter } from "selectors";
 import { RootState } from "types";
 import { loadTasks } from "action";
 import {
@@ -14,6 +14,8 @@ import {
   footer,
   list,
 } from "./todoTasks.module.scss";
+
+import { socket } from "App";
 
 const footerList: string[] = [
   "Double-click to edit a todo",
@@ -27,7 +29,6 @@ const TodoTask: React.FC<RouteComponentProps> = ({ location }) => {
   const storeOffset = useSelector((state: RootState) => getOffset(state));
   const storeLimit = useSelector((state: RootState) => getLimit(state));
   const filter = useSelector((state: RootState) => getFilter(state));
-  const user = useSelector((state: RootState) => getUser(state));
 
   useEffect(() => {
     const { page, limit } = qs.parse(location.search, {
@@ -45,44 +46,47 @@ const TodoTask: React.FC<RouteComponentProps> = ({ location }) => {
         filter,
       })
     );
+
+    socket.on("load tasks", () => {
+      dispatch(
+        loadTasks({
+          offset: paramsOffset,
+          limit: paramsLimit,
+          filter,
+        })
+      );
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="content flex">
-      <div className="g-container">
-        <h1 className={title}>todos</h1>
-        <div className={todo}>
-          <div className={todoContainer}>
-            <MainTodoInput
-              tasks={tasks}
-              offset={storeOffset}
-              limit={storeLimit}
-              filter={filter}
-            />
+    <PageContainer>
+      <h1 className={title}>todos</h1>
+      <div className={todo}>
+        <div className={todoContainer}>
+          <MainTodoInput
+            tasks={tasks}
+            offset={storeOffset}
+            limit={storeLimit}
+            filter={filter}
+          />
 
-            <TodoList
-              offset={storeOffset}
-              limit={storeLimit}
-              className={list}
-              filter={filter}
-            />
+          <TodoList
+            offset={storeOffset}
+            limit={storeLimit}
+            className={list}
+            filter={filter}
+          />
 
-            <TaskFilter
-              offset={storeOffset}
-              limit={storeLimit}
-              filter={filter}
-            />
-          </div>
-        </div>
-        <div className={footer}>
-          {footerList.map((text, index) => (
-            <Paragraph key={index} text={text} />
-          ))}
+          <TaskFilter offset={storeOffset} limit={storeLimit} filter={filter} />
         </div>
       </div>
-      <Message />
-    </div>
+      <div className={footer}>
+        {footerList.map((text, index) => (
+          <Paragraph key={index} text={text} />
+        ))}
+      </div>
+    </PageContainer>
   );
 };
 
