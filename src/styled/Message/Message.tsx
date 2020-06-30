@@ -60,7 +60,7 @@ const Message: React.FC<MessageProps> = ({
 
     setTimeoutId(timerId);
     return () => clearTimeout(timeoutId);
-  }, []);
+  }, [hideMessage, id, timeoutId]);
 
   const onHideMessage = () => {
     clearTimeout(timeoutId);

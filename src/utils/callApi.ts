@@ -20,11 +20,6 @@ const callApi = async (path: any, requestOptions = {}) => {
 
   const response = await fetch(path, options);
 
-  // if (response.ok) {
-  //   const data = await response.json();
-  //   return data;
-  // }
-
   return response;
 };
 

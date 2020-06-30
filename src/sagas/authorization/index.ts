@@ -88,7 +88,7 @@ function* onSignUp(action: onSignUpParams) {
   }
 }
 
-export function* watchSignUp() {
+function* watchSignUp() {
   yield takeEvery(SIGN_UP, onSignUp);
 }
 
@@ -112,7 +112,7 @@ function* onSignIn(action: onSignUpParams) {
   }
 }
 
-export function* watchSignIn() {
+function* watchSignIn() {
   yield takeEvery(SIGN_IN, onSignIn);
 }
 
@@ -129,7 +129,7 @@ function* onLoadUserData() {
   }
 }
 
-export function* watchLoadUserData() {
+function* watchLoadUserData() {
   yield takeEvery(LOAD_USER_DATA, onLoadUserData);
 }
 
@@ -152,6 +152,12 @@ function* onLogout() {
   }
 }
 
-export function* watchLogout() {
+function* watchLogout() {
   yield takeEvery(LOGOUT, onLogout);
 }
+
+function* authorizationWatch() {
+  yield all([watchLogout(), watchLoadUserData(), watchSignIn(), watchSignUp()]);
+}
+
+export default authorizationWatch;

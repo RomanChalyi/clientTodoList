@@ -54,7 +54,7 @@ function* onLoadingTasks(action: onLoadingTasksParams) {
   }
 }
 
-export function* watchLoadTasks() {
+function* watchLoadTasks() {
   yield takeEvery([LOAD_TASKS, CHANGE_FILTER], onLoadingTasks);
 }
 
@@ -76,7 +76,7 @@ function* onUpdateTasks(action: onLoadingTasksParams) {
   }
 }
 
-export function* watchUpdateTasks() {
+function* watchUpdateTasks() {
   yield takeEvery(UPDATE_TASKS, onUpdateTasks);
 }
 
@@ -104,7 +104,7 @@ function* onAddTask(action: OnAddTaskParams) {
   }
 }
 
-export function* watchAddTask() {
+function* watchAddTask() {
   yield takeEvery(ADD_TASK, onAddTask);
 }
 
@@ -131,7 +131,7 @@ function* onDeleteTask(action: onDeleteTaskParams) {
   }
 }
 
-export function* watchDeleteTask() {
+function* watchDeleteTask() {
   yield takeEvery(DELETE_TASK, onDeleteTask);
 }
 
@@ -158,7 +158,7 @@ function* onChangeTask(action: onChangeTaskParams) {
   }
 }
 
-export function* watchChangeTask() {
+function* watchChangeTask() {
   yield takeEvery([CHANGE_STATUS_TASK, EDIT_TASK_VALUE], onChangeTask);
 }
 
@@ -189,7 +189,7 @@ function* onChangeVisibleTaskStatuses(
   }
 }
 
-export function* watchChangeVisibleTaskStatuses() {
+function* watchChangeVisibleTaskStatuses() {
   yield takeEvery(CHANGE_TASKS_STATUSES, onChangeVisibleTaskStatuses);
 }
 
@@ -217,6 +217,19 @@ function* onDeleteCompletedTasks(action: onDeleteCompletedTasksParams) {
   }
 }
 
-export function* watchDeleteCompletedTasks() {
+function* watchDeleteCompletedTasks() {
   yield takeEvery(DELETE_COMPLETED_TASKS, onDeleteCompletedTasks);
 }
+
+function* watchTodoTask() {
+  yield all([
+    watchDeleteCompletedTasks(),
+    watchChangeVisibleTaskStatuses(),
+    watchChangeTask(),
+    watchDeleteTask(),
+    watchAddTask(),
+    watchUpdateTasks(),
+    watchLoadTasks(),
+  ]);
+}
+export default watchTodoTask;
